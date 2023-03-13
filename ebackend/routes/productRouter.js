@@ -5,17 +5,27 @@ const {
     createProduct,
     updateProduct,
     deleteProduct,
-    getProductDetails
+    getProductDetails, createProductReview, getProductReviews, deleteReview
 } = require('../controllers/productController')
 const {checkProduct} = require("../middleware/common function");
 const {isAuthenticatedUser, authorizeRoles} = require("../middleware/auth");
 
 
 router.route("/products").get(getAllProducts)
-router.route("/product/new").post(isAuthenticatedUser,authorizeRoles("admin"), createProduct)
-router.route("/product/:id").put(isAuthenticatedUser,authorizeRoles("admin"), checkProduct, updateProduct)
-    .delete(isAuthenticatedUser,authorizeRoles("admin"), checkProduct, deleteProduct)
+
+router.route("/admin/product/new").post(isAuthenticatedUser, authorizeRoles("admin"), createProduct)
+
+router.route("/admin/product/:id")
+    .put(isAuthenticatedUser, authorizeRoles("admin"), checkProduct, updateProduct)
+    .delete(isAuthenticatedUser, authorizeRoles("admin"), checkProduct, deleteProduct)
     .get(isAuthenticatedUser, checkProduct, getProductDetails)
 
+router.route("/product/:id").get(checkProduct, getProductDetails)
+
+router.route("/review").put(isAuthenticatedUser, createProductReview);
+
+router.route("/reviews")
+    .get(getProductReviews)
+    .delete(isAuthenticatedUser, deleteReview);
 
 module.exports = router;
