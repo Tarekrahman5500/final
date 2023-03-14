@@ -1,5 +1,5 @@
 const Product = require('../models/productModel')
-const ErrorHandler = require("../utils/errorhander");
+const ErrorHandler = require("../utils/errorhandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors")
 
 exports.checkProduct = catchAsyncErrors(async (req, res, next) => {

@@ -1,7 +1,7 @@
 const Product = require('../models/productModel')
 const catchAsyncErrors = require("../middleware/catchAsyncErrors")
 const ApiFeatures = require("../utils/apifeatures")
-const ErrorHandler = require("../utils/errorhander");
+const ErrorHandler = require("../utils/errorhandler");
 // create product
 
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
