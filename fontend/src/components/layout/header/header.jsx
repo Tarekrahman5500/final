@@ -13,6 +13,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import {InputBase, styled} from "@mui/material";
+import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
+
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -27,7 +30,7 @@ const Header = () => {
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+     let navigate = useNavigate();
     const handleOpenNavMenu = (event) => {
      //   console.log(event.target.id)
        // event.preventDefault();
@@ -40,6 +43,7 @@ const Header = () => {
     };
 
     const handleCloseNavMenu = (event) => {
+        navigate(event.currentTarget.id)
         console.log(event.currentTarget.id)
         setAnchorElNav(null);
     };
@@ -48,6 +52,11 @@ const Header = () => {
           console.log(event)
         setAnchorElUser(null);
     };
+     const searchSubmitHandler = event => {
+        event.preventDefault();
+        if(event.target.value.trim()) navigate(`/products/${event.target.value}`)
+         else toast.error(`${event.target.value} not found`)
+    }
 
     return (
         <AppBar position="static">
@@ -129,7 +138,7 @@ const Header = () => {
                     >
                         LOGO
                     </Typography>
-                    <Search><InputBase placeholder='Search'/></Search>
+                    <Search><InputBase placeholder='Search' onBlur={searchSubmitHandler}/></Search>
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                         {pages.map((page) => (
                             <Button
