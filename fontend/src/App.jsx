@@ -6,6 +6,7 @@ import Footer from "./components/layout/footer/footer.jsx";
 import Home from "./components/home/home.jsx";
 import ProductDetails from "./components/product/product-details.jsx"
 import Products from "./components/product/products.jsx"
+import LoginSignUp from "./components/user/LoginSignUp.jsx";
 function App() {
     return (
         <div>
@@ -16,6 +17,7 @@ function App() {
                  <Route path="/product/:id" element={<ProductDetails/>}/>
                  <Route path="/products" element={<Products/>}/>
                 <Route path="/products/:keyword" element={<Products/>}/>
+                 <Route path="/login" element={<LoginSignUp/>}/>
             </Routes>
             <Footer/>
         </div>

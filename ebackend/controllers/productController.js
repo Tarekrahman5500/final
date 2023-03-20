@@ -12,14 +12,23 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
 })
 // get all products
 exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
-    // const apiFeatures =
-  //  return  next(new ErrorHandler('Test error', 404))
-    const resultPerPage = 8
-    const productsCount = await Product.countDocuments()
-    const products = await (new ApiFeatures(Product.find(), req.query)
-        .search().filter().pagination(resultPerPage)).query
-    return res.status(201).json({success: 'true', products, productsCount, resultPerPage})
-})
+    const resultPerPage = 8;
+    const productsCount = await Product.countDocuments();
+
+    const apiFeature = new ApiFeatures(Product.find(), req.query)
+        .search()
+        .filter();
+
+    let products = await apiFeature.query;
+
+    let filteredProductsCount = products.length;
+
+    apiFeature.pagination(resultPerPage);
+
+    products = await apiFeature.query.clone();
+
+    return res.status(200).json({success: true, products, productsCount, resultPerPage, filteredProductsCount});
+});
 
 // get a single product
 
@@ -62,7 +71,7 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
     };
 
     const product = await Product.findById(productId);
-    if (!product) return next(new ErrorHandler('product not found',404))
+    if (!product) return next(new ErrorHandler('product not found', 404))
 
     const isReviewed = product.reviews.find(
         (rev) => rev.user.toString() === req.user._id.toString()

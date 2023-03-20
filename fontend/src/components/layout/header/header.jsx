@@ -13,12 +13,12 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import {InputBase, styled} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 
 
 const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Account', 'Dashboard', 'Login'];
 
 const Search = styled('div')(({theme}) => ({
     backgroundColor: 'white',
@@ -30,15 +30,15 @@ const Header = () => {
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-     let navigate = useNavigate();
+    let navigate = useNavigate();
     const handleOpenNavMenu = (event) => {
-     //   console.log(event.target.id)
-       // event.preventDefault();
+        //   console.log(event.target.id)
+        // event.preventDefault();
         setAnchorElNav(event.currentTarget);
 
     };
     const handleOpenUserMenu = (event) => {
-    // console.log(event.target.id)
+        // console.log(event.target.id)
         setAnchorElUser(event.currentTarget);
     };
 
@@ -49,13 +49,20 @@ const Header = () => {
     };
 
     const handleCloseUserMenu = (event) => {
-          console.log(event)
+        console.log(event)
+        navigate(event)
         setAnchorElUser(null);
     };
-     const searchSubmitHandler = event => {
+    const searchSubmitHandler = event => {
         event.preventDefault();
-        if(event.target.value.trim()) navigate(`/products/${event.target.value}`)
-         else toast.error(`${event.target.value} not found`)
+        if (event.target.value.trim()) navigate(`/products/${event.target.value}`)
+        else toast.error(`${event.target.value} not found`)
+    }
+
+    const goHome = (event) => {
+
+        event.preventDefault();
+        navigate('/home')
     }
 
     return (
@@ -67,8 +74,8 @@ const Header = () => {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/"
-                        onClick={(e) =>e.preventDefault()}
+                        href="/home"
+                        onClick={goHome}
                         sx={{
                             mr: 2,
                             display: {xs: 'none', md: 'flex'},
@@ -175,7 +182,7 @@ const Header = () => {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={()=> handleCloseUserMenu(setting) } value={setting}>
+                                <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)} value={setting}>
                                     <Typography textAlign="center">{setting}</Typography>
                                 </MenuItem>
                             ))}

@@ -12,10 +12,10 @@ import Loader from "../layout/loading/loader.jsx";
 
 const Home = () => {
     const dispatch = useDispatch()
-    const {loading, error, products, productCount} = useSelector(state => state.products)
+    const {loading, error, products, productsCount} = useSelector(state => state.products)
     useEffect(() => {
         if (error) return  toast(error)
-        dispatch(getProduct)
+        dispatch(getProduct())
     }, [dispatch, error])
     return (
         <>
