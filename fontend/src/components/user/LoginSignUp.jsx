@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './LoginSignUp.css'
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import FaceIcon from '@mui/icons-material/Face';
 import profile from "../../assets/Profile.png"
 import {useDispatch, useSelector} from "react-redux";
-import {clearErrors, login} from "../../actions/userAction.js";
+import {clearErrors, login, register} from "../../actions/userAction.js";
 import {toast} from "react-toastify";
 import Loader from "../layout/loading/loader.jsx";
 
@@ -19,6 +19,7 @@ const LoginSignUp = () => {
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
      let navigate = useNavigate();
+
     const [avatar, setAvatar] = useState(profile);
     const [avatarPreview, setAvatarPreview] = useState(profile);
     const {error, loading, isAuthenticated} = useSelector(state => state.user);
@@ -29,7 +30,7 @@ const LoginSignUp = () => {
     });
     const loginSubmit = (e) => {
         e.preventDefault();
-        console.log(loginEmail, loginPassword)
+      //  console.log(loginEmail, loginPassword)
         dispatch(login(loginEmail, loginPassword));
     };
 
@@ -42,7 +43,7 @@ const LoginSignUp = () => {
         myForm.set("email", email);
         myForm.set("password", password);
         myForm.set("avatar", avatar);
-        // dispatch(register(myForm));
+         dispatch(register(myForm));
     };
 
     const registerDataChange = (e) => {

@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const fileUpload = require("express-fileupload");
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/userRouter');
@@ -12,24 +13,25 @@ const errorMiddleware = require('./middleware/error')
 const cors = require("cors");
 
 
-
 app.use(logger('dev'));
-const api = process.env.API_URL || 'http://127.0.0.1:5173'
-const api2 = process.env.API_URL2 || 'http://127.0.0.1:3000'
+
+const api = process.env.API_URL || 'http://127.0.0.1:3000'
 //handle cors policy
 app.use(cors({
-    origin: [api, api2],
-    method: "GET,POST,PUT,PATCH,DELETE",
     credentials: true,
+    origin: api,
+    method: "GET,POST,PUT,PATCH,DELETE",
+
 }))
 /*
 
  */
 app.options('*', cors())
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload({useTempFiles: false}));
+app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 app.use('/', indexRouter);
 app.use('/api/v1/', usersRouter);

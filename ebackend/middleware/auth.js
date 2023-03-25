@@ -6,30 +6,34 @@ const jwt = require("jsonwebtoken");
 require('dotenv').config({path: "ebackend/config/.env"});
 
 exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
-  const { token } = req.cookies;
 
-  if (!token) {
-    return next(new ErrorHandler("Please Login to access this resource", 401));
-  }
+    // console.log(req.header("Authorization"))
+    // const token = req.header("Authorization");
+    let token
 
-  const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+    if (!req.header("Authorization")) {
+        return next(new ErrorHandler("Please Login to access this resource", 401));
+    }
+   // if (req.cookies) token = req.cookies.token;
+    else token = req.header("Authorization")
+    const decodedData = jwt.verify(token, process.env.JWT_SECRET);
 
-  req.user = await User.findById(decodedData.id);
+    req.user = await User.findById(decodedData.id);
 
-  next();
+    next();
 });
 
 exports.authorizeRoles = (...roles) => {
-  return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      return next(
-        new ErrorHandler(
-          `Role: ${req.user.role} is not allowed to access this resource `,
-          403
-        )
-      );
-    }
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            return next(
+                new ErrorHandler(
+                    `Role: ${req.user.role} is not allowed to access this resource `,
+                    403
+                )
+            );
+        }
 
-    next();
-  };
+        next();
+    };
 };

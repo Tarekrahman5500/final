@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import {InputBase, styled} from "@mui/material";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {useSelector} from "react-redux";
 import {clearErrors} from "../../../actions/userAction.js";
@@ -30,10 +30,12 @@ const Search = styled('div')(({theme}) => ({
 
 const Header = () => {
 
+
     const {isAuthenticated} = useSelector(state => state.user);
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     let navigate = useNavigate();
+     const location = useLocation();
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -56,7 +58,7 @@ const Header = () => {
 
     const handleCloseNavMenu = (event) => {
         navigate(event.currentTarget.id)
-        console.log(event.currentTarget.id)
+     //   console.log(event.currentTarget.id)
         setAnchorElNav(null);
     };
 
@@ -195,7 +197,8 @@ const Header = () => {
                         >
                             {settings.map((setting) => (
                                 <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)} value={setting}>
-                                    <Link to={`${setting.toLowerCase()}`}>
+                                    <Link style={{textDecoration: 'none', color: 'black'}}
+                                          to={`${setting.toLowerCase()}`} >
                                         <Typography textAlign="center">{setting}</Typography></Link>
                                 </MenuItem>
                             ))}
