@@ -74,6 +74,7 @@ const ProductDetails = () => {
       ) : (
         <>
           <MetaData title={`${product.name} page`} />
+            <ToastContainer/>
           <div className="ProductDetails">
             <div>
               <Carousel>

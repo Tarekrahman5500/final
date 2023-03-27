@@ -11,7 +11,7 @@ import {useSelector} from "react-redux";
 import store from "./store";
 import {loadUser} from "./actions/userAction.js";
 import WebFont from "webfontloader";
-
+import Profile from "./components/user/profile.jsx"
 function App() {
 
     const {isAuthenticated, user} = useSelector(state => state.user);
@@ -36,6 +36,7 @@ function App() {
                 <Route path="/products" element={<Products/>}/>
                 <Route path="/products/:keyword" element={<Products/>}/>
                 <Route path="/login" element={<LoginSignUp/>}/>
+                <Route path="/profile" element={<Profile/>}/>
             </Routes>
             <Footer/>
         </div>

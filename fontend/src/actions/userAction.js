@@ -45,6 +45,19 @@ export const login = (email, password) => async (dispatch) => {
     }
 };
 
+
+//Logout User
+export const logout = () => async (dispatch) => {
+   // console.log('logout')
+  try {
+      await axios.get(`logout`);
+   //  console.log(data)
+     localStorage.clear();
+    dispatch({ type: LOGOUT_SUCCESS });
+  } catch (error) {
+    dispatch({ type: LOGOUT_FAIL, payload: error.response.data.message });
+  }
+};
 // Register
 export const register = (userData) => async (dispatch) => {
     try {
