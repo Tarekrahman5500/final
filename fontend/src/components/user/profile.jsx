@@ -2,14 +2,17 @@ import React, {useEffect} from 'react';
 import {toast, ToastContainer} from "react-toastify";
 import {clearErrors} from "../../actions/userAction.js";
 import {useDispatch, useSelector} from "react-redux";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import MetaData from "../layout/metaData.jsx";
 import Loader from "../layout/loading/loader.jsx";
 import './profile.css'
 const Profile = () => {
     const dispatch = useDispatch();
     const {error, loading, isAuthenticated, user} = useSelector(state => state.user);
-    console.log(isAuthenticated)
+     const location = useLocation()
+
+    const path = location.pathname || 'home'
+    //console.log(path)
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -18,10 +21,10 @@ const Profile = () => {
             dispatch(clearErrors());
         }
 
-        if (isAuthenticated === false) {
-            navigate("/home");
+        if (!isAuthenticated ) {
+            navigate('/home');
         }
-    }, [dispatch, error, isAuthenticated])
+    }, [dispatch, error])
     return (
         <>
             {loading ? (

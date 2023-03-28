@@ -16,11 +16,11 @@ import {InputBase, styled} from "@mui/material";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../../../actions/userAction.js";
+import {clearErrors, logout} from "../../../actions/userAction.js";
 import {parse, stringify, toJSON, fromJSON} from 'flatted';
 
 const pages = ['Products', 'Pricing', 'Blog'];
-let settings = [];
+let settings = ['Login'];
 
 
 const Search = styled('div')(({theme}) => ({
@@ -31,16 +31,16 @@ const Search = styled('div')(({theme}) => ({
 
 const Header = () => {
 
-
+      const dispatch = useDispatch();
     const {isAuthenticated, user} = useSelector(state => state.user);
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     let navigate = useNavigate();
-    const dispatch = useDispatch();
+    const location = useLocation();
 
     useEffect(() => {
-        // console.log(user)
         if (isAuthenticated) {
+            stringify(settings.splice(0, 1))
             if (user.role === 'admin') {
                 stringify(settings.push('DashBoard', 'Profile', 'Logout'))
             } else {
@@ -50,8 +50,11 @@ const Header = () => {
             }
             // stringify(settings.push('Profile', "Logout"))
         }
+         return () => {
+            settings = ['Login'];
+         }
 
-    }, [isAuthenticated, user])
+    }, [isAuthenticated])
 
 
     const handleOpenNavMenu = (event) => {
@@ -72,13 +75,13 @@ const Header = () => {
     };
 
     const handleCloseUserMenu = (event) => {
-        console.log(event)
+      //  console.log(event)
         // navigate(event)
-        if (event === 'Logout') {
-            console.log('here')
+         if (event === 'Logout') {
+         //   console.log('here')
             dispatch(logout())
             navigate('/login')
-        } if (typeof  event === 'string') {
+        } else if (typeof  event === 'string') {
             navigate(`${event.toLowerCase()}`)
         }
         setAnchorElUser(null);
@@ -104,7 +107,7 @@ const Header = () => {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/home"
+
                         onClick={goHome}
                         sx={{
                             mr: 2,
@@ -213,15 +216,10 @@ const Header = () => {
                         >
                             {settings.map((setting) => (
                                 <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)} value={setting}>
-                                    {
-
-
-                                        <Typography style={{textDecoration: 'none', color: 'black'}}
-                                                    textAlign="center">{setting}</Typography>
-                                        /* : (<Link style={{textDecoration: 'none', color: 'black'}}
-                                                  to={`${setting.toLowerCase()}`}>
-                                             <Typography textAlign="center">{setting}</Typography></Link>)*/
+                                    {<Typography style={{textDecoration: 'none', color: 'black'}}
+                                                 textAlign="center">{setting}</Typography>
                                     }
+
                                 </MenuItem>
                             ))}
                             {/* <MenuItem>

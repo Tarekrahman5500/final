@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import './App.css'
 import Header from "./components/layout/header/header.jsx";
 import Footer from "./components/layout/footer/footer.jsx";
@@ -17,11 +17,6 @@ function App() {
     const {isAuthenticated, user} = useSelector(state => state.user);
     const token = localStorage.getItem('token');
     useEffect(() => {
-        WebFont.load({
-            google: {
-                families: ["Roboto", "Droid Sans", "Chilanka"],
-            },
-        });
 
         store.dispatch(loadUser(token));
 
@@ -35,8 +30,8 @@ function App() {
                 <Route path="/product/:id" element={<ProductDetails/>}/>
                 <Route path="/products" element={<Products/>}/>
                 <Route path="/products/:keyword" element={<Products/>}/>
-                <Route path="/login" element={<LoginSignUp/>}/>
-                <Route path="/profile" element={<Profile/>}/>
+                <Route path="/login" element={ <LoginSignUp/> }/>
+                <Route path="/profile" element={ <Profile/>}/>
             </Routes>
             <Footer/>
         </div>
